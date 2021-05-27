@@ -1,9 +1,0 @@
-LICENSE
-README.md
-pyproject.toml
-setup.py
-pyghelper.egg-info/PKG-INFO
-pyghelper.egg-info/SOURCES.txt
-pyghelper.egg-info/dependency_links.txt
-pyghelper.egg-info/requires.txt
-pyghelper.egg-info/top_level.txt
