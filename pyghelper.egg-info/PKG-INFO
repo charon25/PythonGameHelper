@@ -1,0 +1,16 @@
+Metadata-Version: 2.1
+Name: pyghelper
+Version: 0.0.1
+Summary: Functions and classes to help use PyGame
+Home-page: https://www.github.com/charon25/PythonGameHelper
+Author: Paul 'charon25' Kern
+License: MIT
+Description: # Python Game Helper
+        ## Features
+        - [ ] SoundManager
+        - [ ] EventManager
+        - [ ] AnimationManager
+        
+Platform: UNKNOWN
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
