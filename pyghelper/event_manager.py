@@ -19,6 +19,8 @@ class EventManager:
             pygame.MOUSEBUTTONUP: None
         }
 
+        self.custom_events = {}
+
     def __get_parameters_count(self, function):
         return len(inspect.signature(function).parameters)
 
@@ -99,6 +101,28 @@ class EventManager:
 
         self.__set_premade_callback(pygame.MOUSEBUTTONUP, callback, parameters_count=1)
 
+    def add_custom_event(self, event_name, callback):
+        """
+        Add a custom event with the specified name to the manager.
+
+        event_name: name of the event, unique.
+        callback: function to be called when this event occurs.
+        It should have only one parameter : a dictionary containing the event data.
+
+        When the event is posted, its data dictionary should at least have a 'name' field
+        containing the name of the event.
+        """
+
+        if event_name == "":
+            raise ValueError("Event name cannot be empty.")
+
+        if event_name in self.custom_events:
+            raise IndexError("Event name '{}' already exists.".format(event_name))
+
+        self.__check_function(callback, parameters_count=1)
+        self.custom_events[event_name] = callback
+
+
     def __call_premade_event_callback_no_parameter(self, event_type):
         if event_type not in self.premade_events:
             return
@@ -117,6 +141,17 @@ class EventManager:
 
         self.premade_events[event_type](event.dict)
 
+    def __call_custom_event_callback(self, event):
+        if not 'name' in event.dict:
+            return
+
+        event_name = event.dict['name']
+        if not event_name in self.premade_events:
+            return
+        
+        self.custom_events[event_name](event.dict)
+
+
     def listen(self):
         """Listen for incoming events, and call the right function accordingly."""
 
@@ -124,6 +159,6 @@ class EventManager:
             if event.type == pygame.QUIT:
                 self.__call_premade_event_callback_no_parameter(pygame.QUIT)
             elif event.type == pygame.USEREVENT:
-                pass
+                self.__call_custom_event_callback(event)
             else:
                 self.__call_premade_event_callback_with_arguments(event.type, event)
