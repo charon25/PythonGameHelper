@@ -24,12 +24,13 @@ class SoundManager:
 
         self.sounds[sound_name].append(sound)
 
-    def add_sound(self, sound_path, sound_name):
+    def add_sound(self, sound_path, sound_name, volume=1.0):
         """
         Add a new sound to the manager.
 
         sound_path: path to the sound file.
         sound_name: name of the sound, used to play it later.
+        volume: volume of the sound, between 0.0 and 1.0 inclusive (default: 1.0).
         """
 
         if sound_name == "":
@@ -40,6 +41,7 @@ class SoundManager:
         except:
             raise FileNotFoundError("Sound file does not exist or is inaccessible.")
 
+        sound.set_volume(volume)
         self.__add_sound_dic(sound, sound_name)
 
     def play_sound(self, sound_name):
@@ -80,14 +82,15 @@ class SoundManager:
         except:
             raise FileNotFoundError("File '{}' does not exist or is inaccessible.".format(music_path))
 
-    def __play_music(self, loop):
+    def __play_music(self, loop, volume=1.0):
         pygame.mixer.music.plays(loops=(-1 if loop else 0))
+        pygame.mixer.music.set_volume(volume)
 
-    def play_random_music(self, loop=False):
+    def play_random_music(self, loop=False, volume=1.0):
         """
         Play a random music from the list.
 
-        loop: Indicates if the music should be looped (default: False)
+        loop: indicates if the music should be looped (default: False)
         """
 
         if len(self.musics) == 0:
@@ -95,9 +98,9 @@ class SoundManager:
 
         music_to_play = random.choice(self.musics.values())
         self.__load_music(music_to_play)
-        self.__play_music(loop=loop)
+        self.__play_music(loop=loop, volume=volume)
 
-    def play_music(self, music_name, loop=False):
+    def play_music(self, music_name, loop=False, volume=1.0):
         """
         Play the music with the specified name.
 
@@ -110,7 +113,7 @@ class SoundManager:
 
         music_to_play = self.musics[music_name]
         self.__load_music(music_to_play)
-        self.__play_music(loop=loop)
+        self.__play_music(loop=loop, volume=volume)
 
     def pause_music(self):
         """Pause the music."""
