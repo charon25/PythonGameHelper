@@ -83,7 +83,7 @@ class SoundManager:
             raise FileNotFoundError("File '{}' does not exist or is inaccessible.".format(music_path))
 
     def __play_music(self, loop, volume=1.0):
-        pygame.mixer.music.plays(loops=(-1 if loop else 0))
+        pygame.mixer.music.play(loops=(-1 if loop else 0))
         pygame.mixer.music.set_volume(volume)
 
     def play_random_music(self, loop=False, volume=1.0):
@@ -96,7 +96,7 @@ class SoundManager:
         if len(self.musics) == 0:
             raise ValueError("No music previously added.")
 
-        music_to_play = random.choice(self.musics.values())
+        music_to_play = random.choice(list(self.musics.values()))
         self.__load_music(music_to_play)
         self.__play_music(loop=loop, volume=volume)
 

@@ -25,7 +25,7 @@ class EventManager:
         return len(inspect.signature(function).parameters)
 
     def __check_function(self, callback, parameters_count=-1):
-        if not callback(callback):
+        if not callable(callback):
             raise ValueError("The callback argument is not callable.")
 
         if parameters_count == -1:
@@ -81,7 +81,7 @@ class EventManager:
 
         self.__set_premade_callback(pygame.MOUSEMOTION, callback, parameters_count=1)
 
-    def set_mouvebuttondown_callback(self, callback):
+    def set_mousebuttondown_callback(self, callback):
         """
         Set the callback for the 'MOUSEBUTTONDOWN' event.
 
@@ -146,9 +146,9 @@ class EventManager:
             return
 
         event_name = event.dict['name']
-        if not event_name in self.premade_events:
+        if not event_name in self.custom_events:
             return
-        
+
         self.custom_events[event_name](event.dict)
 
 
