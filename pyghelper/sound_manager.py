@@ -10,7 +10,7 @@ class SoundManager:
     """
 
     def __init__(self):
-        """Initialize the instance and Pygame's Mixer."""
+        """Initialize the sound manager instance and Pygame's Mixer."""
 
         self.sounds = {}
         self.musics = {}
