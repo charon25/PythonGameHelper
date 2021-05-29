@@ -1,7 +1,9 @@
 import inspect
+from typing import Callable
 
 import pygame
 
+import pyghelper.config as config
 
 class EventManager:
     """
@@ -17,15 +19,16 @@ class EventManager:
             pygame.KEYUP: None,
             pygame.MOUSEMOTION: None,
             pygame.MOUSEBUTTONDOWN: None,
-            pygame.MOUSEBUTTONUP: None
+            pygame.MOUSEBUTTONUP: None,
+            config.MUSICENDEVENT: None
         }
 
         self.custom_events = {}
 
-    def __get_parameters_count(self, function: function):
+    def __get_parameters_count(self, function: Callable):
         return len(inspect.signature(function).parameters)
 
-    def __check_function(self, callback: function, parameters_count: int):
+    def __check_function(self, callback: Callable, parameters_count: int):
         if not callable(callback):
             raise ValueError("The callback argument is not callable.")
 
@@ -35,11 +38,11 @@ class EventManager:
                 parameters_count
             ))
 
-    def __set_premade_callback(self, event_type: int, callback: function, parameters_count: int):
+    def __set_premade_callback(self, event_type: int, callback: Callable[[dict], None], parameters_count: int):
         self.__check_function(callback, parameters_count)
         self.premade_events[event_type] = callback
 
-    def set_quit_callback(self, callback: function):
+    def set_quit_callback(self, callback: Callable[[], None]):
         """
         Set the callback for the 'QUIT' event.
 
@@ -49,7 +52,7 @@ class EventManager:
 
         self.__set_premade_callback(pygame.QUIT, callback, parameters_count=0)
 
-    def set_keydown_callback(self, callback: function):
+    def set_keydown_callback(self, callback: Callable[[dict], None]):
         """
         Set the callback for the 'KEYDOWN' event.
 
@@ -59,7 +62,7 @@ class EventManager:
 
         self.__set_premade_callback(pygame.KEYDOWN, callback, parameters_count=1)
 
-    def set_keyup_callback(self, callback: function):
+    def set_keyup_callback(self, callback: Callable[[dict], None]):
         """
         Set the callback for the 'KEYUP' event.
 
@@ -69,7 +72,7 @@ class EventManager:
 
         self.__set_premade_callback(pygame.KEYUP, callback, parameters_count=1)
 
-    def set_mousemotion_callback(self, callback: function):
+    def set_mousemotion_callback(self, callback: Callable[[dict], None]):
         """
         Set the callback for the 'MOUSEMOTION' event.
 
@@ -79,7 +82,7 @@ class EventManager:
 
         self.__set_premade_callback(pygame.MOUSEMOTION, callback, parameters_count=1)
 
-    def set_mousebuttondown_callback(self, callback: function):
+    def set_mousebuttondown_callback(self, callback: Callable[[dict], None]):
         """
         Set the callback for the 'MOUSEBUTTONDOWN' event.
 
@@ -89,7 +92,7 @@ class EventManager:
 
         self.__set_premade_callback(pygame.MOUSEBUTTONDOWN, callback, parameters_count=1)
 
-    def set_mousebuttonup_callback(self, callback: function):
+    def set_mousebuttonup_callback(self, callback: Callable[[dict], None]):
         """
         Set the callback for the 'MOUSEBUTTONUP' event.
 
@@ -99,7 +102,17 @@ class EventManager:
 
         self.__set_premade_callback(pygame.MOUSEBUTTONUP, callback, parameters_count=1)
 
-    def add_custom_event(self, event_name: str, callback: function):
+    def set_music_end_callback(self, callback: Callable[[], None]):
+        """
+        Set the callback for the music end event (see SoundManager docs).
+
+        callback: function to be called when this event occurs.
+        It should not have any parameters.
+        """
+
+        self.__set_premade_callback(config.MUSICENDEVENT, callback, parameters_count=0)
+
+    def add_custom_event(self, event_name: str, callback: Callable[[dict], None]):
         """
         Add a custom event with the specified name to the manager.
 
@@ -129,7 +142,7 @@ class EventManager:
 
         self.premade_events[event_type]()
 
-    def __call_premade_event_callback_with_arguments(self, event_type: int, event: pygame.event.Event):
+    def __call_premade_event_callback_with_parameters(self, event_type: int, event: pygame.event.Event):
         if event_type not in self.premade_events:
             return
 
@@ -156,5 +169,7 @@ class EventManager:
                 self.__call_premade_event_callback_no_parameter(pygame.QUIT)
             elif event.type == pygame.USEREVENT:
                 self.__call_custom_event_callback(event)
+            elif event.type == config.MUSICENDEVENT:
+                self.__call_premade_event_callback_no_parameter(config.MUSICENDEVENT)
             else:
-                self.__call_premade_event_callback_with_arguments(event.type, event)
+                self.__call_premade_event_callback_with_parameters(event.type, event)

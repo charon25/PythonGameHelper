@@ -3,6 +3,7 @@ import random
 
 import pygame
 
+import pyghelper.config as config
 
 class SoundManager:
     """
@@ -83,7 +84,9 @@ class SoundManager:
             raise FileNotFoundError("File '{}' does not exist or is inaccessible.".format(music_path))
 
     def __play_music(self, loop: bool, volume: int = 1.0):
-        pygame.mixer.music.play(loops=(-1 if loop else 0))
+        # Pygame expects -1 to loop and 0 to play the music only once
+        # So we take the negative value so when it is 'True' we send -1
+        pygame.mixer.music.play(loops=-loop)
         pygame.mixer.music.set_volume(volume)
 
     def play_random_music(self, loop: bool = False, volume: int = 1.0):
@@ -134,3 +137,16 @@ class SoundManager:
         """Returns True when the music is playing and not paused."""
 
         return pygame.mixer.music.get_busy()
+
+    def enable_music_endevent(self):
+        """
+        Enable the posting of an event when the music ends. 
+        Uses pygame.USEREVENT+1 as type, so beware of any conflict.
+        """
+
+        pygame.mixer.music.set_endevent(config.MUSICENDEVENT)
+    
+    def disable_music_endevent(self):
+        """Disable the posting of an event when the music ends (default state)."""
+
+        pygame.mixer.music.set_endevent()
