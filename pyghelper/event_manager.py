@@ -4,6 +4,7 @@ from typing import Callable
 import pygame
 
 import pyghelper.config as config
+import pyghelper.utils as utils
 
 
 class EventManager:
@@ -11,8 +12,14 @@ class EventManager:
     A class to ease the use of premade and custom events of PyGame.
     """
 
-    def __init__(self):
-        """Initialize the event manager instance. It has no callback at the beginning."""
+    def __init__(self, use_default_quit_callback: bool = True):
+        """
+        Initialize the event manager instance. No callback are set at the beginning, 
+        except the one for the 'QUIT' event if specified.
+        
+        use_default_quit_callback: indicated if the manager should use the Window.close function as a callback
+        for the 'QUIT' event (default: True).
+        """
 
         self.premade_events = {
             pygame.QUIT: None,
@@ -23,6 +30,9 @@ class EventManager:
             pygame.MOUSEBUTTONUP: None,
             config.MUSICENDEVENT: None
         }
+
+        if use_default_quit_callback:
+            self.premade_events[pygame.QUIT] = utils.Window.close
 
         self.custom_events = {}
 
@@ -162,8 +172,11 @@ class EventManager:
 
         self.custom_events[event_name](event.dict)
 
-    def listen(self):
-        """Listen for incoming events, and call the right function accordingly."""
+    def listen(self) -> bool:
+        """Listen for incoming events, and call the right function accordingly. Returns True if it could fetch events."""
+
+        if not pygame.display.get_init():
+            return False
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -174,3 +187,5 @@ class EventManager:
                 self.__call_premade_event_callback_no_parameter(config.MUSICENDEVENT)
             else:
                 self.__call_premade_event_callback_with_parameters(event.type, event)
+        
+        return True

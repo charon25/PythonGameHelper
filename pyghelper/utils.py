@@ -29,7 +29,7 @@ class Window:
         return screen
 
     @staticmethod
-    def quit_callback():
+    def close():
         """Premade callback which closes Pygame."""
 
         pygame.display.quit()
