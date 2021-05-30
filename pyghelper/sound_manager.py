@@ -5,6 +5,7 @@ import pygame
 
 import pyghelper.config as config
 
+
 class SoundManager:
     """
     A class to ease the use of the mixer module of Pygame.
@@ -25,7 +26,7 @@ class SoundManager:
 
         self.sounds[sound_name].append(sound)
 
-    def add_sound(self, sound_path: str, sound_name:str , volume: int = 1.0):
+    def add_sound(self, sound_path: str, sound_name: str, volume: int = 1.0):
         """
         Add a new sound to the manager.
 
@@ -39,8 +40,8 @@ class SoundManager:
 
         try:
             sound = pygame.mixer.Sound(sound_path)
-        except:
-            raise FileNotFoundError("Sound file does not exist or is inaccessible.")
+        except FileNotFoundError:
+            raise FileNotFoundError("Sound file '{}' does not exist or is inaccessible.".format(sound_path))
 
         sound.set_volume(volume)
         self.__add_sound_dic(sound, sound_name)
@@ -70,7 +71,7 @@ class SoundManager:
             raise ValueError("The music name cannot be empty.")
 
         if not os.path.isfile(music_path):
-            raise FileNotFoundError("Music file does not exist or is inaccessible.")
+            raise FileNotFoundError("Music file '{}' does not exist or is inaccessible.".format(music_path))
 
         if music_name in self.musics:
             raise ValueError("This name is already used by another music.")
@@ -80,7 +81,7 @@ class SoundManager:
     def __load_music(self, music_path: str):
         try:
             pygame.mixer.music.load(music_path)
-        except:
+        except pygame.error:
             raise FileNotFoundError("File '{}' does not exist or is inaccessible.".format(music_path))
 
     def __play_music(self, loop: bool, volume: int = 1.0):
@@ -93,7 +94,8 @@ class SoundManager:
         """
         Play a random music from the list.
 
-        loop: indicates if the music should be looped (default: False)
+        loop: indicates if the music should be looped (default: False).
+        volume: volume at which to play the music, between 0.0 and 1.0 inclusive (default: 1.0).
         """
 
         if len(self.musics) == 0:
@@ -109,6 +111,7 @@ class SoundManager:
 
         music_name: name of the music to be played.
         loop: indicates if the music should be looped (default: False).
+        volume: volume at which to play the music, between 0.0 and 1.0 inclusive (default: 1.0).
         """
 
         if music_name not in self.musics:
@@ -140,12 +143,12 @@ class SoundManager:
 
     def enable_music_endevent(self):
         """
-        Enable the posting of an event when the music ends. 
+        Enable the posting of an event when the music ends.
         Uses pygame.USEREVENT+1 as type, so beware of any conflict.
         """
 
         pygame.mixer.music.set_endevent(config.MUSICENDEVENT)
-    
+
     def disable_music_endevent(self):
         """Disable the posting of an event when the music ends (default state)."""
 

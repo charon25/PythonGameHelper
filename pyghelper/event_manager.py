@@ -5,6 +5,7 @@ import pygame
 
 import pyghelper.config as config
 
+
 class EventManager:
     """
     A class to ease the use of premade and custom events of PyGame.
