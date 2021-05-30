@@ -14,9 +14,9 @@ class EventManager:
 
     def __init__(self, use_default_quit_callback: bool = True):
         """
-        Initialize the event manager instance. No callback are set at the beginning, 
+        Initialize the event manager instance. No callback are set at the beginning,
         except the one for the 'QUIT' event if specified.
-        
+
         use_default_quit_callback: indicated if the manager should use the Window.close function as a callback
         for the 'QUIT' event (default: True).
         """
@@ -187,5 +187,5 @@ class EventManager:
                 self.__call_premade_event_callback_no_parameter(config.MUSICENDEVENT)
             else:
                 self.__call_premade_event_callback_with_parameters(event.type, event)
-        
+
         return True
