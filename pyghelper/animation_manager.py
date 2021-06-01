@@ -25,22 +25,25 @@ class Animation:
         starting_sprite_index: the index of the first sprite of the animation (default: 0).
         """
 
+        self.sprites = sprites
+        self.sprites_count = len(self.sprites)
+        self.durations = self.correct_durations(durations, self.sprites_count)
+        self.clock = 0
+        self.current_sprite_index = starting_sprite_index
+        self.cumulated_durations = [sum(self.durations[:i]) for i in range(1, self.sprites_count + 1)]
+        self.animation_duration = self.cumulated_durations[-1] # The last cumulated sum is the total sum
+
+    def correct_durations(self, durations, sprites_count):
         if type(durations) == int:
             durations = [durations]
 
-        if len(durations) < len(sprites):
-            missing_count = len(sprites) - len(durations)
+        if len(durations) < sprites_count:
+            missing_count = sprites_count - len(durations)
             durations.extend([durations[-1]] * missing_count)
-        elif len(durations) > len(sprites):
-            durations = durations[:len(sprites)]
+        elif len(durations) > sprites_count:
+            durations = durations[:sprites_count]
 
-        self.sprites = sprites
-        self.durations = durations
-        self.sprites_count = len(self.sprites)
-        self.clock = 0
-        self.current_sprite_index = starting_sprite_index
-        self.animation_duration = sum(self.durations)
-        self.cumulated_durations = [sum(self.durations[:i]) for i in range(1, self.sprites_count + 1)]
+        return durations
 
     def __get_current_sprite_index(self):
         return next(
@@ -59,3 +62,47 @@ class Animation:
         """Returns the current sprite of the animation."""
 
         return self.sprites[self.current_sprite_index]
+
+
+class AnimationManager:
+    """
+    A class to manages multiple Animation classes simultaneously.
+    """
+
+    def __init__(self):
+        """Initialize the manager."""
+
+        self.animations = []
+
+    def add_animation(self, animation: Animation) -> None:
+        """Add the specified animation to the manager."""
+
+        if type(animation) != Animation:
+            raise TypeError('The animation should be of type Animation.')
+
+        self.animations.append(animation)
+
+    def remove_animation(self, animation: Animation) -> None:
+        """Remove the specified animation from the manager."""
+
+        if animation not in self.animations:
+            raise ValueError("This animation does not belong the the manager.")
+
+        self.animations.remove(animation)
+
+    def get_animation(self, index: int) -> Animation:
+        """Return the animation at the specified index."""
+
+        if index >= len(self.animations):
+            raise IndexError("Index ({}) is greater than the number of animations ({})".format(
+                index,
+                len(self.animations)
+            ))
+
+        return self.animations[index]
+
+    def play_all(self) -> None:
+        """Play all the animations."""
+
+        for animation in self.animations:
+            animation.play()
