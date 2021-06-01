@@ -53,7 +53,10 @@ class Sprite:
             raise TypeError("The specified object was not a Surface or a string.")
 
     @staticmethod
-    def splice_by_columns(sprite_sheet: Union[str, pygame.Surface], sprites_count: int) -> List[pygame.Surface]:
+    def splice_by_columns(
+        sprite_sheet: Union[str, pygame.Surface],
+        sprites_count: int
+    ) -> List[pygame.Surface]:
         """
         Splice by columns the given sprite sheet into the specified number of surfaces.
         Example : ABCD becomes [A, B, C, D].
@@ -79,7 +82,10 @@ class Sprite:
         return sprites
 
     @staticmethod
-    def splice_by_rows(sprite_sheet: Union[str, pygame.Surface], sprites_count: int) -> List[pygame.Surface]:
+    def splice_by_rows(
+        sprite_sheet: Union[str, pygame.Surface],
+        sprites_count: int
+    ) -> List[pygame.Surface]:
         """
         Splice by rows the given sprite sheet into the specified number of surfaces.
         Example :
@@ -112,7 +118,9 @@ class Sprite:
 
     @staticmethod
     def __splice_vertically_then_horizontally(
-        sprite_sheet: Union[str, pygame.Surface], sprites_count_width: int, sprites_count_height: int
+        sprite_sheet: Union[str, pygame.Surface],
+        sprites_count_width: int,
+        sprites_count_height: int
     ) -> List[List[pygame.Surface]]:
         """"""
 
@@ -126,7 +134,9 @@ class Sprite:
 
     @staticmethod
     def __splice_horizontally_then_vertically(
-        sprite_sheet: Union[str, pygame.Surface], sprites_count_width: int, sprites_count_height: int
+        sprite_sheet: Union[str, pygame.Surface],
+        sprites_count_width: int,
+        sprites_count_height: int
     ) -> List[List[pygame.Surface]]:
         """"""
 
@@ -140,7 +150,10 @@ class Sprite:
 
     @staticmethod
     def splice_both_ways(
-        sprite_sheet: Union[str, pygame.Surface], sprites_count_width: int, sprites_count_height: int, by_rows_first: bool = True
+        sprite_sheet: Union[str, pygame.Surface],
+        sprites_count_width: int,
+        sprites_count_height: int,
+        by_rows_first: bool = True
     ) -> List[List[pygame.Surface]]:
         """
         Splice by rows and by columns the given sprite sheet into the specified number of surfaces.

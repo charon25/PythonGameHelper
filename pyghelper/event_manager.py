@@ -41,7 +41,7 @@ class EventManager:
 
     def __check_function(self, callback: Callable, parameters_count: int):
         if not callable(callback):
-            raise ValueError("The callback argument is not callable.")
+            raise TypeError("The callback argument is not callable.")
 
         if self.__get_parameters_count(callback) != parameters_count:
             raise ValueError("The callback has {} parameters instead of {}.".format(
