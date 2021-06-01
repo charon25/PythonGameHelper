@@ -1,6 +1,8 @@
+from typing import Any, List, Tuple, Type, Union
+
 import pygame
 
-import pyghelper
+import pyghelper.images as images
 
 
 class Window:
@@ -23,7 +25,7 @@ class Window:
             pygame.display.set_caption(title)
 
         if icon_path != "":
-            icon = pyghelper.Image.create(icon_path)
+            icon = images.Image.create(icon_path)
             pygame.display.set_icon(icon)
 
         return screen

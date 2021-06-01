@@ -2,6 +2,8 @@ from typing import List, Union
 
 import pygame
 
+import pyghelper.utils as utils
+
 
 class Animation:
     """
@@ -27,13 +29,13 @@ class Animation:
 
         self.sprites = sprites
         self.sprites_count = len(self.sprites)
-        self.durations = self.correct_durations(durations, self.sprites_count)
+        self.durations = self._correct_durations(durations, self.sprites_count)
         self.clock = 0
         self.current_sprite_index = starting_sprite_index
         self.cumulated_durations = [sum(self.durations[:i]) for i in range(1, self.sprites_count + 1)]
         self.animation_duration = self.cumulated_durations[-1] # The last cumulated sum is the total sum
 
-    def correct_durations(self, durations, sprites_count):
+    def _correct_durations(self, durations, sprites_count):
         if type(durations) == int:
             durations = [durations]
 
