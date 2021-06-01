@@ -41,7 +41,7 @@ class Image:
 
 
 class Sprite:
-    """A class containing method to splice sprite sheet into list of surfaces."""
+    """A class containing method to slice sprite sheet into list of surfaces."""
 
     @staticmethod
     def __get_surface(surface: Union[str, pygame.Surface]) -> pygame.Surface:
@@ -53,16 +53,16 @@ class Sprite:
             raise TypeError("The specified object was not a Surface or a string.")
 
     @staticmethod
-    def splice_by_columns(
+    def slice_by_columns(
         sprite_sheet: Union[str, pygame.Surface],
         sprites_count: int
     ) -> List[pygame.Surface]:
         """
-        Splice by columns the given sprite sheet into the specified number of surfaces.
+        slice by columns the given sprite sheet into the specified number of surfaces.
         Example : ABCD becomes [A, B, C, D].
 
         sprite_sheet: either a string containing the path to the sheet, either the sheet directly as a surface.
-        sprites_count: number of sprites to splice.
+        sprites_count: number of sprites to slice.
         """
 
         sprite_sheet = Sprite.__get_surface(sprite_sheet)
@@ -82,12 +82,12 @@ class Sprite:
         return sprites
 
     @staticmethod
-    def splice_by_rows(
+    def slice_by_rows(
         sprite_sheet: Union[str, pygame.Surface],
         sprites_count: int
     ) -> List[pygame.Surface]:
         """
-        Splice by rows the given sprite sheet into the specified number of surfaces.
+        slice by rows the given sprite sheet into the specified number of surfaces.
         Example :
         A
         B
@@ -97,7 +97,7 @@ class Sprite:
         becomes [A, B, C, D]
 
         sprite_sheet: either a string containing the path to the sheet, either the sheet directly as a surface.
-        sprites_count: number of sprites to splice.
+        sprites_count: number of sprites to slice.
         """
 
         sprite_sheet = Sprite.__get_surface(sprite_sheet)
@@ -117,52 +117,52 @@ class Sprite:
         return sprites
 
     @staticmethod
-    def __splice_vertically_then_horizontally(
+    def __slice_vertically_then_horizontally(
         sprite_sheet: Union[str, pygame.Surface],
         sprites_count_width: int,
         sprites_count_height: int
     ) -> List[List[pygame.Surface]]:
         """"""
 
-        sprites_rows = Sprite.splice_vertically(sprite_sheet, sprites_count_width)
+        sprites_rows = Sprite.slice_vertically(sprite_sheet, sprites_count_width)
 
         sprites = []
         for row in sprites_rows:
-            sprites.append(Sprite.splice_horizontally(row, sprites_count_height))
+            sprites.append(Sprite.slice_horizontally(row, sprites_count_height))
 
         return sprites
 
     @staticmethod
-    def __splice_horizontally_then_vertically(
+    def __slice_horizontally_then_vertically(
         sprite_sheet: Union[str, pygame.Surface],
         sprites_count_width: int,
         sprites_count_height: int
     ) -> List[List[pygame.Surface]]:
         """"""
 
-        sprites_rows = Sprite.splice_horizontally(sprite_sheet, sprites_count_width)
+        sprites_rows = Sprite.slice_horizontally(sprite_sheet, sprites_count_width)
 
         sprites = []
         for row in sprites_rows:
-            sprites.append(Sprite.splice_vertically(row, sprites_count_height))
+            sprites.append(Sprite.slice_vertically(row, sprites_count_height))
 
         return sprites
 
     @staticmethod
-    def splice_both_ways(
+    def slice_both_ways(
         sprite_sheet: Union[str, pygame.Surface],
         sprites_count_width: int,
         sprites_count_height: int,
         by_rows_first: bool = True
     ) -> List[List[pygame.Surface]]:
         """
-        Splice by rows and by columns the given sprite sheet into the specified number of surfaces.
+        slice by rows and by columns the given sprite sheet into the specified number of surfaces.
         The order is given by the 'by_rows' parameters.
 
         sprite_sheet: either a string containing the path to the sheet, either the sheet directly as a surface.
         sprites_count_width: number of sprites for each row.
         sprites_count_height: number of psrites for each column.
-        by_rows: indicates if the splice should be done first by rows (True) or by columns (False) (default: True).
+        by_rows: indicates if the slice should be done first by rows (True) or by columns (False) (default: True).
         Example :
         ABCD
         EFGH
@@ -173,6 +173,6 @@ class Sprite:
         """
 
         if by_rows_first:
-            return Image.__splice_vertically_then_horizontally(sprite_sheet, sprites_count_width, sprites_count_height)
+            return Sprite.__slice_vertically_then_horizontally(sprite_sheet, sprites_count_width, sprites_count_height)
         else:
-            return Image.__splice_horizontally_then_vertically(sprite_sheet, sprites_count_width, sprites_count_height)
+            return Sprite.__slice_horizontally_then_vertically(sprite_sheet, sprites_count_width, sprites_count_height)

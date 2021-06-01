@@ -72,37 +72,48 @@ class AnimationManager:
     def __init__(self):
         """Initialize the manager."""
 
-        self.animations = []
+        self.animations = {}
 
-    def add_animation(self, animation: Animation) -> None:
+    def add_animation(self, animation: Animation, name: str) -> None:
         """Add the specified animation to the manager."""
 
         if type(animation) != Animation:
-            raise TypeError('The animation should be of type Animation.')
+            raise TypeError("The animation should be of type Animation.")
+        
+        if name == "":
+            raise ValueError("Animation name cannot be empty.")
 
-        self.animations.append(animation)
+        if name in self.animations:
+            raise IndexError("This name ('{}') is already used for another animation.".format(name))
 
-    def remove_animation(self, animation: Animation) -> None:
-        """Remove the specified animation from the manager."""
+        self.animations[name] = animation
 
-        if animation not in self.animations:
-            raise ValueError("This animation does not belong the the manager.")
+    def remove_animation(self, name: str) -> Animation:
+        """Remove and return the specified animation from the manager."""
 
-        self.animations.remove(animation)
+        if name not in self.animations:
+            raise ValueError("This animation ('{}') does not exist.")
 
-    def get_animation(self, index: int) -> Animation:
+        return self.animations.pop(name)
+
+    def get_animation(self, name: str) -> Animation:
         """Return the animation at the specified index."""
 
-        if index >= len(self.animations):
-            raise IndexError("Index ({}) is greater than the number of animations ({})".format(
-                index,
-                len(self.animations)
-            ))
+        if name not in self.animations:
+            raise IndexError("This animation ('{}') does not exist.".format(name))
 
-        return self.animations[index]
+        return self.animations[name]
 
-    def play_all(self) -> None:
-        """Play all the animations."""
+    def get_current_sprite(self, name: str) -> pygame.Surface:
+        """Return the sprite of the specified animation."""
 
-        for animation in self.animations:
-            animation.play()
+        if name not in self.animations:
+            raise IndexError("This animation ('{}') does not exist.".format(name))
+
+        return self.animations[name].get_current_sprite()
+
+    def play_all(self, ticks = 1) -> None:
+        """Play the specified number of ticks (default: 1) of all the animations."""
+
+        for animation in self.animations.values():
+            animation.play(ticks)
