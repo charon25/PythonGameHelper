@@ -144,7 +144,7 @@ class SoundManager:
     def enable_music_endevent(self):
         """
         Enable the posting of an event when the music ends.
-        Uses pygame.USEREVENT+1 as type, so beware of any conflict.
+        Uses pygame.USEREVENT+1 as type, so be aware of any conflict.
         """
 
         pygame.mixer.music.set_endevent(config.MUSICENDEVENT)
