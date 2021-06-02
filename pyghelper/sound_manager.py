@@ -166,7 +166,7 @@ class SoundManager:
 
         Notes
         -----
-        Uses pygame.USEREVENT+1 as type, so beware of any conflict.
+        Uses pygame.USEREVENT+1 as type, so be aware of any conflict.
         """
 
         pygame.mixer.music.set_endevent(config.MUSICENDEVENT)
