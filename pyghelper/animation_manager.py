@@ -19,12 +19,17 @@ class Animation:
         """
         Initialize the animation with the specified sprites and durations.
 
-        sprites: list of Pygame's Surfaces. Can be obtained from a file name using the Image static methods.
-        durations: int or list of ints indicating the time to spend on each sprite.
+        Parameters
+        ----------
+        sprites : list of pygame.Surfaces.
+            Can be obtained from a file name using the Image class static methods.
+        durations : int or list of int
+            Indicates the time to spend on each sprite.
             If an int is passed, it will be used for every sprite.
             If the list does not contain enough values, it will be completed by the last one.
             If the list has too much values, it will be cut off.
-        starting_sprite_index: the index of the first sprite of the animation (default: 0).
+        starting_sprite_index : int, default = 0
+            The index of the first sprite of the animation.
         """
 
         self.sprites = sprites
@@ -55,7 +60,13 @@ class Animation:
         )
 
     def play(self, ticks=1) -> None:
-        """Play the specified number of ticks (default: 1) of the animation."""
+        """Play the specified number of ticks of the animation.
+
+        Parameters
+        ----------
+        ticks : int, default = 1
+            Number of ticks to play.
+        """
 
         self.clock = (self.clock + ticks) % self.animation_duration
         self.current_sprite_index = self.__get_current_sprite_index()
@@ -77,7 +88,16 @@ class AnimationManager:
         self.animations = {}
 
     def add_animation(self, animation: Animation, name: str) -> None:
-        """Add the specified animation to the manager."""
+        """
+        Add the specified animation to the manager.
+
+        Parameters
+        ----------
+        animation : Animation
+            Animation to add to the manager.
+        name : str
+            Name of the animation.        
+        """
 
         if type(animation) != Animation:
             raise TypeError("The animation should be of type Animation.")
@@ -91,7 +111,14 @@ class AnimationManager:
         self.animations[name] = animation
 
     def remove_animation(self, name: str) -> Animation:
-        """Remove and return the specified animation from the manager."""
+        """
+        Remove and return the specified animation from the manager.
+
+        Parameters
+        ----------
+        name : str
+            Name of the animation to remove.
+        """
 
         if name not in self.animations:
             raise ValueError("This animation ('{}') does not exist.")
@@ -99,7 +126,14 @@ class AnimationManager:
         return self.animations.pop(name)
 
     def get_animation(self, name: str) -> Animation:
-        """Return the animation at the specified index."""
+        """
+        Return the animation at the specified index.
+
+        Parameters
+        ----------
+        name : str
+            Name of the animation to get.
+        """
 
         if name not in self.animations:
             raise IndexError("This animation ('{}') does not exist.".format(name))
@@ -107,7 +141,14 @@ class AnimationManager:
         return self.animations[name]
 
     def get_current_sprite(self, name: str) -> pygame.Surface:
-        """Return the sprite of the specified animation."""
+        """
+        Return the sprite of the specified animation.
+
+        Parameters
+        ----------
+        name : str
+            Name of the animation to get the sprite of.
+        """
 
         if name not in self.animations:
             raise IndexError("This animation ('{}') does not exist.".format(name))
@@ -115,7 +156,14 @@ class AnimationManager:
         return self.animations[name].get_current_sprite()
 
     def play_all(self, ticks = 1) -> None:
-        """Play the specified number of ticks (default: 1) of all the animations."""
+        """
+        Play the specified number of ticks of all the animations.
+
+        Parameters
+        ----------
+        ticks : int, default = 1
+            Number of ticks to play.
+        """
 
         for animation in self.animations.values():
             animation.play(ticks)

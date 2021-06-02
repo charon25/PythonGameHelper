@@ -25,7 +25,14 @@ class Image:
 
     @staticmethod
     def create(file_path: str) -> pygame.Surface:
-        """Create an image from the specified path."""
+        """
+        Create an image from the specified path.
+
+        Parameters
+        ----------
+        file_path : str
+            Path of the image file.
+        """
 
         Image.__check_mode_and_display()
 
@@ -33,7 +40,14 @@ class Image:
 
     @staticmethod
     def create_no_alpha(file_path: str) -> pygame.Surface:
-        """Create an image from the specified path with no alpha channel."""
+        """
+        Create an image from the specified path with no alpha channel.
+
+        Parameters
+        ----------
+        file_path : str
+            Path of the image file.
+        """
 
         Image.__check_mode_and_display()
 
@@ -61,8 +75,13 @@ class Sprite:
         slice by columns the given sprite sheet into the specified number of surfaces.
         Example : ABCD becomes [A, B, C, D].
 
-        sprite_sheet: either a string containing the path to the sheet, either the sheet directly as a surface.
-        sprites_count: number of sprites to slice.
+        Parameters
+        ----------
+        sprite_sheet : str or pygame.Surface
+            Either a string containing the path to the sheet
+            or the sheet directly as a surface.
+        sprites_count : int
+            Number of sprites to slice.
         """
 
         sprite_sheet = Sprite.__get_surface(sprite_sheet)
@@ -96,8 +115,13 @@ class Sprite:
 
         becomes [A, B, C, D]
 
-        sprite_sheet: either a string containing the path to the sheet, either the sheet directly as a surface.
-        sprites_count: number of sprites to slice.
+        Parameters
+        ----------
+        sprite_sheet : str or pygame.Surface
+            Either a string containing the path to the sheet
+            or the sheet directly as a surface.
+        sprites_count : int
+            Number of sprites to slice.
         """
 
         sprite_sheet = Sprite.__get_surface(sprite_sheet)
@@ -159,17 +183,25 @@ class Sprite:
         slice by rows and by columns the given sprite sheet into the specified number of surfaces.
         The order is given by the 'by_rows' parameters.
 
-        sprite_sheet: either a string containing the path to the sheet, either the sheet directly as a surface.
-        sprites_count_width: number of sprites for each row.
-        sprites_count_height: number of psrites for each column.
-        by_rows: indicates if the slice should be done first by rows (True) or by columns (False) (default: True).
-        Example :
-        ABCD
-        EFGH
-        IJKL
+        Parameters
+        ----------
+        sprite_sheet : str or pygame.Surface
+            Either a string containing the path to the sheet,
+            or the sheet directly as a surface.
+        sprites_count_width : int
+            Number of sprites in each row.
+        sprites_count_height : int
+            Number of psrites in each column.
+        by_rows : bool, default = True
+            Indicates if the slice should be done first by rows (True)
+            or by columns (False).
+            Example :
+            ABCD
+            EFGH
+            IJKL
 
-        becomes [[A, B, C, D], [E, F, G, H], [I, J, K, L]] if by_rows_first = True
-        and [[A, E, I], [B, F, J], [C, G, K], [D, H, L]] if by_rows_first = False.
+            becomes [[A, B, C, D], [E, F, G, H], [I, J, K, L]] if by_rows_first is True
+            and [[A, E, I], [B, F, J], [C, G, K], [D, H, L]] if by_rows_first is False.
         """
 
         if by_rows_first:

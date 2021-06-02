@@ -13,9 +13,14 @@ class Window:
         """
         Open a Pygame window with the specified width, height, title and icon.
 
-        width, height: size of the window.
-        title: title of the window, optional.
-        icon_path: path of the icon image, optional.
+        Parameters
+        ----------
+        width, height : int
+            Size of the window.
+        title : str, optional
+            Title of the window.
+        icon_path : str, optional
+            Path of the icon image.
         """
 
         pygame.init()
@@ -32,7 +37,7 @@ class Window:
 
     @staticmethod
     def close():
-        """Premade callback which closes Pygame."""
+        """Premade function which closes Pygame."""
 
         pygame.display.quit()
         pygame.quit()

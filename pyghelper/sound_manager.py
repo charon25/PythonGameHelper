@@ -19,8 +19,6 @@ class SoundManager:
         pygame.mixer.init()
 
     def __add_sound_dic(self, sound: str, sound_name: str):
-        """Add the sound to the dictionary of sound, creating the entry if it does not exist."""
-
         if sound_name not in self.sounds:
             self.sounds[sound_name] = []
 
@@ -30,9 +28,14 @@ class SoundManager:
         """
         Add a new sound to the manager.
 
-        sound_path: path to the sound file.
-        sound_name: name of the sound, used to play it later.
-        volume: volume of the sound, between 0.0 and 1.0 inclusive (default: 1.0).
+        Parameters
+        ----------
+        sound_path : str
+            Path to the sound file.
+        sound_name : str
+            Name of the sound, used to play it later.
+        volume : float, default = 1.0
+            Volume of the sound, between 0.0 and 1.0 inclusive.
         """
 
         if sound_name == "":
@@ -50,7 +53,10 @@ class SoundManager:
         """
         Play a random sound among those with the specified name.
 
-        sound_name: name of the sound to be played.
+        Parameters
+        ----------
+        sound_name : str 
+            Name of the sound to be played. It should have been added beforehand.
         """
 
         if sound_name not in self.sounds or len(self.sounds[sound_name]) == 0:
@@ -63,8 +69,12 @@ class SoundManager:
         """
         Add a new music to the manager.
 
-        music_path: path to the music file.
-        music_name: name of the music, used to play it later.
+        Parameters
+        ----------
+        music_path : str
+            Path to the music file.
+        music_name : str
+            Name of the music, used to play it later.
         """
 
         if music_name == "":
@@ -94,8 +104,12 @@ class SoundManager:
         """
         Play a random music from the list.
 
-        loop: indicates if the music should be looped (default: False).
-        volume: volume at which to play the music, between 0.0 and 1.0 inclusive (default: 1.0).
+        Parameters
+        ----------
+        loop : bool, default = False
+            Indicates if the music should be looped.
+        volume : float, default = 1.0
+            Volume at which to play the music, between 0.0 and 1.0 inclusive.
         """
 
         if len(self.musics) == 0:
@@ -109,9 +123,14 @@ class SoundManager:
         """
         Play the music with the specified name.
 
-        music_name: name of the music to be played.
-        loop: indicates if the music should be looped (default: False).
-        volume: volume at which to play the music, between 0.0 and 1.0 inclusive (default: 1.0).
+        Parameters
+        ----------
+        music_name : str
+            Name of the music to be played.
+        loop : bool, default = False
+            Indicates if the music should be looped.
+        volume : float, default = 1.0
+            Volume at which to play the music, between 0.0 and 1.0 inclusive (default: 1.0).
         """
 
         if music_name not in self.musics:
@@ -144,6 +163,9 @@ class SoundManager:
     def enable_music_endevent(self):
         """
         Enable the posting of an event when the music ends.
+
+        Notes
+        -----
         Uses pygame.USEREVENT+1 as type, so beware of any conflict.
         """
 

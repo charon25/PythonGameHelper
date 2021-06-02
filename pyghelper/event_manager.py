@@ -17,8 +17,11 @@ class EventManager:
         Initialize the event manager instance. No callback are set at the beginning,
         except the one for the 'QUIT' event if specified.
 
-        use_default_quit_callback: indicated if the manager should use the Window.close function as a callback
-        for the 'QUIT' event (default: True).
+        Parameters
+        ----------
+        use_default_quit_callback : bool, default = True
+            Indicates if the manager should use the Window.close function as a callback
+            for the 'QUIT' event (default: True).
         """
 
         self.premade_events = {
@@ -57,8 +60,11 @@ class EventManager:
         """
         Set the callback for the 'QUIT' event.
 
-        callback: function to be called when this event occurs.
-        It should not have any parameters.
+        Parameters
+        ----------
+        callback : Callable
+            Function to be called when this event occurs.
+            It should not have any parameters.
         """
 
         self.__set_premade_callback(pygame.QUIT, callback, parameters_count=0)
@@ -67,8 +73,11 @@ class EventManager:
         """
         Set the callback for the 'KEYDOWN' event.
 
-        callback: function to be called when this event occurs.
-        It should have only one parameter : a dictionary containing the event data.
+        Parameters
+        ----------
+        callback : Callable
+            Function to be called when this event occurs.
+            It should have only one parameter : a dictionary containing the event data.
         """
 
         self.__set_premade_callback(pygame.KEYDOWN, callback, parameters_count=1)
@@ -77,8 +86,11 @@ class EventManager:
         """
         Set the callback for the 'KEYUP' event.
 
-        callback: function to be called when this event occurs.
-        It should have only one parameter : a dictionary containing the event data.
+        Parameters
+        ----------
+        callback : Callable
+            Function to be called when this event occurs.
+            It should have only one parameter : a dictionary containing the event data.
         """
 
         self.__set_premade_callback(pygame.KEYUP, callback, parameters_count=1)
@@ -87,8 +99,11 @@ class EventManager:
         """
         Set the callback for the 'MOUSEMOTION' event.
 
-        callback: function to be called when this event occurs.
-        It should have only one parameter : a dictionary containing the event data.
+        Parameters
+        ----------
+        callback : Callable
+            Function to be called when this event occurs.
+            It should have only one parameter : a dictionary containing the event data.
         """
 
         self.__set_premade_callback(pygame.MOUSEMOTION, callback, parameters_count=1)
@@ -97,8 +112,11 @@ class EventManager:
         """
         Set the callback for the 'MOUSEBUTTONDOWN' event.
 
-        callback: function to be called when this event occurs.
-        It should have only one parameter : a dictionary containing the event data.
+        Parameters
+        ----------
+        callback : Callable
+            Function to be called when this event occurs.
+            It should have only one parameter : a dictionary containing the event data.
         """
 
         self.__set_premade_callback(pygame.MOUSEBUTTONDOWN, callback, parameters_count=1)
@@ -107,18 +125,24 @@ class EventManager:
         """
         Set the callback for the 'MOUSEBUTTONUP' event.
 
-        callback: function to be called when this event occurs.
-        It should have only one parameter : a dictionary containing the event data.
+        Parameters
+        ----------
+        callback : Callable
+            Function to be called when this event occurs.
+            It should have only one parameter : a dictionary containing the event data.
         """
 
         self.__set_premade_callback(pygame.MOUSEBUTTONUP, callback, parameters_count=1)
 
-    def set_music_end_callback(self, callback: Callable[[], None]):
+    def set_musicend_callback(self, callback: Callable[[], None]):
         """
         Set the callback for the music end event (see SoundManager docs).
 
-        callback: function to be called when this event occurs.
-        It should not have any parameters.
+        Parameters
+        ----------
+        callback : Callable
+            Function to be called when this event occurs.
+            It should not have any parameters.
         """
 
         self.__set_premade_callback(config.MUSICENDEVENT, callback, parameters_count=0)
@@ -127,10 +151,16 @@ class EventManager:
         """
         Add a custom event with the specified name to the manager.
 
-        event_name: name of the event, unique.
-        callback: function to be called when this event occurs.
-        It should have only one parameter : a dictionary containing the event data.
+        Parameters
+        ----------
+        event_name : str
+            Name of the event, should be unique.
+        callback : Callable
+            Function to be called when this event occurs.
+            It should have only one parameter : a dictionary containing the event data.
 
+        Notes
+        -----
         When the event is posted, its data dictionary should at least have a 'name' field
         containing the name of the event.
         """
@@ -173,7 +203,9 @@ class EventManager:
         self.custom_events[event_name](event.dict)
 
     def listen(self) -> bool:
-        """Listen for incoming events, and call the right function accordingly. Returns True if it could fetch events."""
+        """Listen for incoming events, and call the right function accordingly.
+        Returns True if it could fetch events, False otherwise.
+        """
 
         if not pygame.display.get_init():
             return False
