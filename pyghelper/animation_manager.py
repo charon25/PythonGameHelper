@@ -34,13 +34,13 @@ class Animation:
 
         self.sprites = sprites
         self.sprites_count = len(self.sprites)
-        self.durations = self._correct_durations(durations, self.sprites_count)
+        self.durations = self.__correct_durations(durations, self.sprites_count)
         self.clock = 0
         self.current_sprite_index = starting_sprite_index
         self.cumulated_durations = [sum(self.durations[:i]) for i in range(1, self.sprites_count + 1)]
         self.animation_duration = self.cumulated_durations[-1] # The last cumulated sum is the total sum
 
-    def _correct_durations(self, durations, sprites_count):
+    def __correct_durations(self, durations, sprites_count):
         if type(durations) == int:
             durations = [durations]
 
