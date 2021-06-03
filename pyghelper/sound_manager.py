@@ -1,4 +1,5 @@
-import os
+import collections
+import pathlib
 import random
 
 import pygame
@@ -14,17 +15,11 @@ class SoundManager:
     def __init__(self):
         """Initialize the sound manager instance and Pygame's Mixer."""
 
-        self.sounds = {}
-        self.musics = {}
+        self.sounds = collections.defaultdict(list)
+        self.musics = dict()
         pygame.mixer.init()
 
-    def __add_sound_dic(self, sound: str, sound_name: str):
-        if sound_name not in self.sounds:
-            self.sounds[sound_name] = []
-
-        self.sounds[sound_name].append(sound)
-
-    def add_sound(self, sound_path: str, sound_name: str, volume: int = 1.0):
+    def add_sound(self, sound_path: str, sound_name: str, volume: float = 1.0):
         """
         Add a new sound to the manager.
 
@@ -44,10 +39,10 @@ class SoundManager:
         try:
             sound = pygame.mixer.Sound(sound_path)
         except FileNotFoundError:
-            raise FileNotFoundError("Sound file '{}' does not exist or is inaccessible.".format(sound_path))
+            raise FileNotFoundError(f"Sound file '{sound_path}' does not exist or is inaccessible.")
 
         sound.set_volume(volume)
-        self.__add_sound_dic(sound, sound_name)
+        self.sounds[sound_name].append(sound)
 
     def play_sound(self, sound_name: str):
         """
@@ -59,10 +54,12 @@ class SoundManager:
             Name of the sound to be played. It should have been added beforehand.
         """
 
-        if sound_name not in self.sounds or len(self.sounds[sound_name]) == 0:
-            raise IndexError("Sound '{}' does not exist.".format(sound_name))
+        sound_candidates = self.sounds.get(sound_name)
 
-        sound_to_play = random.choice(self.sounds[sound_name])
+        if not sound_candidates:
+            raise IndexError(f"Sound '{sound_name}' does not exist.")
+
+        sound_to_play = random.choice(sound_candidates)
         sound_to_play.play()
 
     def add_music(self, music_path: str, music_name: str):
@@ -80,8 +77,8 @@ class SoundManager:
         if music_name == "":
             raise ValueError("The music name cannot be empty.")
 
-        if not os.path.isfile(music_path):
-            raise FileNotFoundError("Music file '{}' does not exist or is inaccessible.".format(music_path))
+        if not pathlib.Path.isfile(music_path):
+            raise FileNotFoundError(f"Music file '{music_path}' does not exist or is inaccessible.")
 
         if music_name in self.musics:
             raise ValueError("This name is already used by another music.")
@@ -92,12 +89,12 @@ class SoundManager:
         try:
             pygame.mixer.music.load(music_path)
         except pygame.error:
-            raise FileNotFoundError("File '{}' does not exist or is inaccessible.".format(music_path))
+            raise FileNotFoundError(f"File '{music_path}' does not exist or is inaccessible.")
 
     def __play_music(self, loop: bool, volume: int = 1.0):
         # Pygame expects -1 to loop and 0 to play the music only once
         # So we take the negative value so when it is 'True' we send -1
-        pygame.mixer.music.play(loops=-loop)
+        pygame.mixer.music.play(loops=-int(loop))
         pygame.mixer.music.set_volume(volume)
 
     def play_random_music(self, loop: bool = False, volume: int = 1.0):
@@ -134,7 +131,7 @@ class SoundManager:
         """
 
         if music_name not in self.musics:
-            raise IndexError("Music '{}' does not exist.".format(music_name))
+            raise IndexError(f"Music '{music_name}' does not exist.")
 
         music_to_play = self.musics[music_name]
         self.__load_music(music_to_play)

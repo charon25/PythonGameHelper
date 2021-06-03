@@ -13,7 +13,7 @@ class Image:
         try:
             return pygame.image.load(file_path)
         except FileNotFoundError:
-            raise FileNotFoundError("File path '{}' does not exist or is inaccessible.".format(file_path))
+            raise FileNotFoundError(f"File path '{file_path}' does not exist or is inaccessible.")
 
     @staticmethod
     def __check_mode_and_display():
@@ -88,7 +88,7 @@ class Sprite:
         width, height = sprite_sheet.get_size()
         width = width // sprites_count
 
-        sprites = []
+        sprites = list()
         for i in range(sprites_count):
             sprite = pygame.Surface((width, height))
             sprite.blit(
@@ -128,7 +128,7 @@ class Sprite:
         width, height = sprite_sheet.get_size()
         height = height // sprites_count
 
-        sprites = []
+        sprites = list()
         for i in range(sprites_count):
             sprite = pygame.Surface((width, height))
             sprite.blit(
@@ -150,7 +150,7 @@ class Sprite:
 
         sprites_rows = Sprite.slice_vertically(sprite_sheet, sprites_count_width)
 
-        sprites = []
+        sprites = list()
         for row in sprites_rows:
             sprites.append(Sprite.slice_horizontally(row, sprites_count_height))
 
@@ -166,7 +166,7 @@ class Sprite:
 
         sprites_rows = Sprite.slice_horizontally(sprite_sheet, sprites_count_width)
 
-        sprites = []
+        sprites = list()
         for row in sprites_rows:
             sprites.append(Sprite.slice_vertically(row, sprites_count_height))
 

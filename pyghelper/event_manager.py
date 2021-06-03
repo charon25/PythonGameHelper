@@ -37,7 +37,7 @@ class EventManager:
         if use_default_quit_callback:
             self.premade_events[pygame.QUIT] = utils.Window.close
 
-        self.custom_events = {}
+        self.custom_events = dict()
 
     def __get_parameters_count(self, function: Callable):
         return len(inspect.signature(function).parameters)
@@ -169,7 +169,7 @@ class EventManager:
             raise ValueError("Event name cannot be empty.")
 
         if event_name in self.custom_events:
-            raise IndexError("Event name '{}' already exists.".format(event_name))
+            raise IndexError(f"Event name '{event_name}' already exists.")
 
         self.__check_function(callback, parameters_count=1)
         self.custom_events[event_name] = callback

@@ -85,7 +85,7 @@ class AnimationManager:
     def __init__(self):
         """Initialize the manager."""
 
-        self.animations = {}
+        self.animations = dict()
 
     def add_animation(self, animation: Animation, name: str) -> None:
         """
@@ -106,7 +106,7 @@ class AnimationManager:
             raise ValueError("Animation name cannot be empty.")
 
         if name in self.animations:
-            raise IndexError("This name ('{}') is already used for another animation.".format(name))
+            raise IndexError(f"This name ('{name}') is already used for another animation.")
 
         self.animations[name] = animation
 
@@ -121,7 +121,7 @@ class AnimationManager:
         """
 
         if name not in self.animations:
-            raise ValueError("This animation ('{}') does not exist.")
+            raise ValueError(f"This animation ('{name}') does not exist.")
 
         return self.animations.pop(name)
 
@@ -136,7 +136,7 @@ class AnimationManager:
         """
 
         if name not in self.animations:
-            raise IndexError("This animation ('{}') does not exist.".format(name))
+            raise IndexError(f"This animation ('{name}') does not exist.")
 
         return self.animations[name]
 
@@ -151,7 +151,7 @@ class AnimationManager:
         """
 
         if name not in self.animations:
-            raise IndexError("This animation ('{}') does not exist.".format(name))
+            raise IndexError(f"This animation ('{name}') does not exist.")
 
         return self.animations[name].get_current_sprite()
 
