@@ -41,3 +41,25 @@ class Window:
 
         pygame.display.quit()
         pygame.quit()
+
+
+def _check_param_type(parameter: Any, types: List[Type], error_message: str = None):
+    if type(types) != list and type(types) != tuple:
+        raise TypeError("The 'types' parameter should be a list or tuple.")
+    
+    if type(parameter) not in types:
+        if error_message is None:
+            error_message = "The parameter is not of the right type."
+        raise TypeError(error_message)
+
+def _check_list_items_type(iter: Union[List[Any], Tuple[Any]], types: List[Type], error_message: str = None):
+    if type(iter) != list and type(iter) != tuple:
+        raise TypeError("The 'iter' parameter should be a list or tuple.")
+
+    if type(types) != list and type(types) != tuple:
+        raise TypeError("The 'types' parameter should be a list or tuple.")
+    
+    if any(type(item) not in types for item in iter):
+        if error_message is None:
+            error_message = "One of the element is not of the right."
+        raise ValueError(error_message)
