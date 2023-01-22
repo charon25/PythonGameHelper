@@ -1,5 +1,5 @@
 import collections
-import pathlib
+import os
 import random
 
 import pygame
@@ -77,7 +77,7 @@ class SoundManager:
         if music_name == "":
             raise ValueError("The music name cannot be empty.")
 
-        if not pathlib.Path.isfile(music_path):
+        if not os.path.isfile(music_path):
             raise FileNotFoundError(f"Music file '{music_path}' does not exist or is inaccessible.")
 
         if music_name in self.musics:
