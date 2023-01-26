@@ -9,7 +9,7 @@ class Window:
     """A class with static methods to wrap some Pygame ones."""
 
     @staticmethod
-    def create(width: int, height: int, title: str = "", icon_path: str = ""):
+    def create(width: int, height: int, title: str = "", icon_path: str = "") -> None:
         """
         Open a Pygame window with the specified width, height, title and icon.
 
@@ -36,7 +36,7 @@ class Window:
         return screen
 
     @staticmethod
-    def close():
+    def close() -> None:
         """Premade function which closes Pygame."""
 
         pygame.display.quit()

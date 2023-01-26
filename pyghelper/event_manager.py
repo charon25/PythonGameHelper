@@ -173,8 +173,8 @@ class EventManager:
         containing the name of the event.
         """
 
-        if event_name in ('', None):
-            raise ValueError("Event name cannot be empty.")
+        if event_name is None:
+            raise ValueError("Event name cannot be None.")
 
         self.__check_function(callback, expected_parameters_count=1)
         self.custom_events[event_name] = callback

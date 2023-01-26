@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fi:
 
 setuptools.setup(
 	name="pyghelper",
-	version="0.0.1",
+	version="0.0.2",
 	author="Paul 'charon25' Kern",
 	description="Functions and classes to help use PyGame",
 	long_description=long_description,
