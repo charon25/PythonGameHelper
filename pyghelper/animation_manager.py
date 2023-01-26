@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import Union
 
 import pygame
 
@@ -7,13 +7,13 @@ import pyghelper.utils as utils
 
 class Animation:
     """
-    A class which manage the details of an animation.
+    A class which manage the working of an animation.
     """
 
     def __init__(
         self,
-        sprites: List[pygame.Surface],
-        durations: Union[int, List[int]],
+        sprites: list[pygame.Surface],
+        durations: Union[int, list[int]],
         starting_sprite_index: int = 0
     ):
         """
@@ -35,31 +35,32 @@ class Animation:
         self.sprites = sprites
         self.sprites_count = len(self.sprites)
         self.durations = self.__correct_durations(durations, self.sprites_count)
-        self.clock = 0
-        self.current_sprite_index = starting_sprite_index
-        self.cumulated_durations = [sum(self.durations[:i]) for i in range(1, self.sprites_count + 1)]
-        self.animation_duration = self.cumulated_durations[-1] # The last cumulated sum is the total sum
+        self.clock: int = 0
+        self.current_sprite_index: int = starting_sprite_index
+        self.cumulated_durations: list[int] = [sum(self.durations[:i]) for i in range(1, self.sprites_count + 1)]
+        self.animation_duration: int = self.cumulated_durations[-1] # The last cumulated sum is the total sum
 
-    def __correct_durations(self, durations, sprites_count):
+    def __correct_durations(self, durations: Union[int, list[int]], sprites_count: int) -> list[int]:
         if type(durations) == int:
-            durations = [durations]
+            return [durations for _ in range(sprites_count)]
 
         if len(durations) < sprites_count:
             missing_count = sprites_count - len(durations)
             durations.extend([durations[-1]] * missing_count)
+
         elif len(durations) > sprites_count:
             durations = durations[:sprites_count]
 
         return durations
 
-    def __get_current_sprite_index(self):
+    def __get_current_sprite_index(self) -> int:
         return next(
             index
             for index, sprite_start_time in enumerate(self.cumulated_durations)
             if sprite_start_time >= self.clock
         )
 
-    def play(self, ticks=1) -> None:
+    def play(self, ticks: int = 1) -> None:
         """Play the specified number of ticks of the animation.
 
         Parameters
@@ -85,7 +86,7 @@ class AnimationManager:
     def __init__(self):
         """Initialize the manager."""
 
-        self.animations = dict()
+        self.animations: dict[str, Animation] = dict()
 
     def add_animation(self, animation: Animation, name: str) -> None:
         """
@@ -96,17 +97,17 @@ class AnimationManager:
         animation : Animation
             Animation to add to the manager.
         name : str
-            Name of the animation.        
+            Name of the animation.
         """
 
         if type(animation) != Animation:
             raise TypeError("The animation should be of type Animation.")
-        
+
         if name == "":
             raise ValueError("Animation name cannot be empty.")
 
         if name in self.animations:
-            raise IndexError(f"This name ('{name}') is already used for another animation.")
+            raise IndexError(f"This name '{name}' is already used for another animation.")
 
         self.animations[name] = animation
 
@@ -125,9 +126,15 @@ class AnimationManager:
 
         return self.animations.pop(name)
 
+    def __getitem__(self, name: str) -> Animation:
+        if name not in self.animations:
+            raise IndexError(f"This animation ('{name}') does not exist.")
+
+        return self.animations[name]
+
     def get_animation(self, name: str) -> Animation:
         """
-        Return the animation at the specified index.
+        Return the animation at the specified index. Can be accessed with square brackets.
 
         Parameters
         ----------
@@ -135,10 +142,7 @@ class AnimationManager:
             Name of the animation to get.
         """
 
-        if name not in self.animations:
-            raise IndexError(f"This animation ('{name}') does not exist.")
-
-        return self.animations[name]
+        return self[name]
 
     def get_current_sprite(self, name: str) -> pygame.Surface:
         """
@@ -150,12 +154,9 @@ class AnimationManager:
             Name of the animation to get the sprite of.
         """
 
-        if name not in self.animations:
-            raise IndexError(f"This animation ('{name}') does not exist.")
+        return self[name].get_current_sprite()
 
-        return self.animations[name].get_current_sprite()
-
-    def play_all(self, ticks = 1) -> None:
+    def play_all(self, ticks: int = 1) -> None:
         """
         Play the specified number of ticks of all the animations.
 

@@ -50,7 +50,7 @@ class SoundManager:
 
         Parameters
         ----------
-        sound_name : str 
+        sound_name : str
             Name of the sound to be played. It should have been added beforehand.
         """
 
