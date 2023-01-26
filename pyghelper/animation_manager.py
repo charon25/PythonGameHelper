@@ -106,9 +106,6 @@ class AnimationManager:
         if name == "":
             raise ValueError("Animation name cannot be empty.")
 
-        if name in self.animations:
-            raise IndexError(f"This name '{name}' is already used for another animation.")
-
         self.animations[name] = animation
 
     def remove_animation(self, name: str) -> Animation:
