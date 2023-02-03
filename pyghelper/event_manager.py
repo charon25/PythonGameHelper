@@ -28,6 +28,7 @@ class EventManager:
             pygame.MOUSEMOTION: None,
             pygame.MOUSEBUTTONDOWN: None,
             pygame.MOUSEBUTTONUP: None,
+            pygame.MOUSEWHEEL: None,
             config.MUSICENDEVENT: None
         }
 
@@ -112,6 +113,16 @@ class EventManager:
         """
 
         self.__set_premade_callback(pygame.MOUSEBUTTONUP, callback, parameters_count=1)
+
+    def set_mousewheel_callback(self, callback: Callable[[dict], None]):
+        """
+        Set the callback for the 'MOUSEWHEEL' event.
+
+        callback: function to be called when this event occurs.
+        It should have only one parameter : a dictionary containing the event data.
+        """
+
+        self.__set_premade_callback(pygame.MOUSEWHEEL, callback, parameters_count=1)
 
     def set_music_end_callback(self, callback: Callable[[], None]):
         """
