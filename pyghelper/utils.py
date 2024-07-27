@@ -69,7 +69,7 @@ class Scale:
         )
 
     def __repr__(self):
-        return f'{self.scale=}, {self.x_offset=}, {self.y_offset=}'
+        return f'Scale{{{self.scale=}, {self.x_offset=}, {self.y_offset=}}}'
 
 
 class Window:
@@ -147,15 +147,15 @@ class Window:
 
         if abs(game_ratio - screen_ratio) < tolerance:
             scale = screen_width / game_width
-            x_offset = 0
-            y_offset = 0
+            x_offset = 0.0
+            y_offset = 0.0
         elif game_ratio > screen_ratio:
             scale = screen_width / game_width
-            x_offset = 0
+            x_offset = 0.0
             y_offset = (screen_height - game_height * scale) / 2
         else:
             scale = screen_height / game_height
             x_offset = (screen_width - game_width * scale) / 2
-            y_offset = 0
+            y_offset = 0.0
 
         return Scale(scale, x_offset, y_offset)
