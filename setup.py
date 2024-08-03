@@ -7,7 +7,7 @@ setuptools.setup(
 	name="pyghelper",
 	version="0.0.3",
 	author="Paul 'charon25' Kern",
-	description="Functions and classes to help use PyGame",
+	description="Functions and classes to help use PyGame (WIP)",
 	long_description=long_description,
     long_description_content_type='text/markdown',
 	python_requires=">=3.11",
