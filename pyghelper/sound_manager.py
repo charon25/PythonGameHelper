@@ -35,6 +35,8 @@ class SoundManager:
         sound = pygame.mixer.Sound(sound_path)
 
         sound.set_volume(volume)
+        if not sound_name in self.sounds:
+            self.sounds[sound_name] = []
         self.sounds[sound_name].append(sound)
 
 
