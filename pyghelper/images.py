@@ -68,8 +68,8 @@ class Sprite:
 
     @staticmethod
     def slice_by_columns(
-        sprite_sheet: Union[str, pygame.Surface],
-        sprites_count: int
+            sprite_sheet: Union[str, pygame.Surface],
+            sprites_count: int
     ) -> List[pygame.Surface]:
         """
         slice by columns the given sprite sheet into the specified number of surfaces.
@@ -102,8 +102,8 @@ class Sprite:
 
     @staticmethod
     def slice_by_rows(
-        sprite_sheet: Union[str, pygame.Surface],
-        sprites_count: int
+            sprite_sheet: Union[str, pygame.Surface],
+            sprites_count: int
     ) -> List[pygame.Surface]:
         """
         slice by rows the given sprite sheet into the specified number of surfaces.
@@ -142,9 +142,9 @@ class Sprite:
 
     @staticmethod
     def __slice_vertically_then_horizontally(
-        sprite_sheet: Union[str, pygame.Surface],
-        sprites_count_width: int,
-        sprites_count_height: int
+            sprite_sheet: Union[str, pygame.Surface],
+            sprites_count_width: int,
+            sprites_count_height: int
     ) -> List[List[pygame.Surface]]:
         """"""
 
@@ -158,9 +158,9 @@ class Sprite:
 
     @staticmethod
     def __slice_horizontally_then_vertically(
-        sprite_sheet: Union[str, pygame.Surface],
-        sprites_count_width: int,
-        sprites_count_height: int
+            sprite_sheet: Union[str, pygame.Surface],
+            sprites_count_width: int,
+            sprites_count_height: int
     ) -> List[List[pygame.Surface]]:
         """"""
 
@@ -174,10 +174,10 @@ class Sprite:
 
     @staticmethod
     def slice_both_ways(
-        sprite_sheet: Union[str, pygame.Surface],
-        sprites_count_width: int,
-        sprites_count_height: int,
-        by_rows_first: bool = True
+            sprite_sheet: Union[str, pygame.Surface],
+            sprites_count_width: int,
+            sprites_count_height: int,
+            by_rows_first: bool = True
     ) -> List[List[pygame.Surface]]:
         """
         slice by rows and by columns the given sprite sheet into the specified number of surfaces.

@@ -1,4 +1,3 @@
-import os
 import random
 
 import pygame
@@ -35,10 +34,9 @@ class SoundManager:
         sound = pygame.mixer.Sound(sound_path)
 
         sound.set_volume(volume)
-        if not sound_name in self.sounds:
+        if sound_name not in self.sounds:
             self.sounds[sound_name] = []
         self.sounds[sound_name].append(sound)
-
 
     def play_random_sound(self, sound_name: str) -> None:
         """
@@ -58,7 +56,6 @@ class SoundManager:
         sound_to_play = random.choice(sound_candidates)
         sound_to_play.play()
 
-
     def add_music(self, music_path: str, music_name: str) -> None:
         """
         Add a new music to the manager.
@@ -73,14 +70,12 @@ class SoundManager:
 
         self.musics[music_name] = music_path
 
-
     def __play_music(self, music_path: str, loop: bool, volume: int = 1.0):
         # Pygame expects -1 to loop and 0 to play the music only once
         # So we take the negative value so when it is 'True' we send -1
         pygame.mixer.music.load(music_path)
         pygame.mixer.music.play(loops=-int(loop))
         pygame.mixer.music.set_volume(volume)
-
 
     def play_random_music(self, loop: bool = False, volume: int = 1.0):
         """
@@ -118,7 +113,6 @@ class SoundManager:
             raise IndexError(f"Music '{music_name}' does not exist.")
 
         self.__play_music(self.musics[music_name], loop=loop, volume=volume)
-
 
     def pause_music(self):
         """Pause the music."""
